@@ -19,12 +19,6 @@ jobs:
           echo "JWT_SECRET=$JWT_SECRET" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Set up Docker Compose
-        uses: docker/setup-compose-action@v1
-
       - name: Prepare environment
         run: npm run infra:start
 
