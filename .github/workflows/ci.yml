@@ -5,20 +5,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Install dependencies
-      run: npm install
+        run: npm install
+
       - name: Check code style
-      run: npm run lint
+        run: npm run lint
+
       - name: Generate a random JWT secret
-      id: generate-secret
-      run: echo "::set-output name=JWT_SECRET::$(openssl rand -based64 40)"
-      shell: bash
+        id: generate-secret
+        run: |
+          JWT_SECRET=$(openssl rand -base64 40)
+          echo "JWT_SECRET=$JWT_SECRET" >> $GITHUB_OUTPUT
+        shell: bash
       - name: Prepare enviroment
-      run: npm run infra:start
+        run: npm run infra:start
+
       - name: Run tests
-      run: npm test
-      env:
-        MONGODB_URI: mongodb://localhost:27017/whispering-database
-        PORT: 3000
-        SALT_ROUNDS: 10
-        JWT_SECRET: ${{ steps.genearte-secret.outputs.JWT_SECRET }}
+        run: npm test
+        env:
+          MONGODB_URI: mongodb://localhost:27017/whispering-database
+          PORT: 3000
+          SALT_ROUNDS: 10
+          JWT_SECRET: ${{ steps.generate-secret.outputs.JWT_SECRET }}
