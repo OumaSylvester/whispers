@@ -3,7 +3,7 @@ services:
         container_name: whispering-database
         image: mongo:7.0.0
         ports:
-          - '27018:27017'
+          - '27017:27017'
         volumes:
           - db-storage:/data/db
 volumes:
