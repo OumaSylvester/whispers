@@ -33,12 +33,10 @@ app.post('/login', async (req, res) => {
 })
 app.post('/signup', async (req, res) => {
   try {
-    console.log('Signing up: ', req.body)
     const { username, password, email } = req.body
     const newUser = await user.create(username, password, email)
     const accessToken = generateToken({ username, id: newUser._id })
     res.json({ accessToken })
-    console.log('user created ', newUser)
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
